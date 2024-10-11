@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { QueryClient , QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import {SignIn} from './pages/auth';
 
 
 const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     element: <App />,
     children : [{
       path : "/auth",
-      element : <div>hi</div>
+      element : <SignIn />
     }]
   },
 ]);
