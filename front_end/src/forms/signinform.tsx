@@ -5,7 +5,7 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import React from 'react'
 import { formDefaultValue, formSchema, IFormSchma } from './formSchema'
 
-const SigninForm = () => {
+const SigninForm = ({registerForm } : {registerForm ?: boolean}) => {
   const { register , formState : {errors , isLoading } , reset , handleSubmit } = useForm<IFormSchma>({
     mode : "onBlur",
     resolver : zodResolver(formSchema),
@@ -13,13 +13,17 @@ const SigninForm = () => {
     
   })
   const handleFormSubmit = (data : IFormSchma) => {
+    if (registerForm){
      console.log(data);
-     reset()
+     reset()}
   }
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
     <Input type='text' placeholder='User name' className=' h-14 mb-4 text-2xl text-white ' {...register("userName" )}/>
     {errors.userName && errorText(errors.userName?.message)}
+    {registerForm &&  
+     <Input type="text" placeholder='Email' className=' h-14 mb-4 text-2xl  text-white'  {...register('email')} />}
+    {errors.email && errorText(errors.email?.message)}
     <Input type="password" placeholder='password' className=' h-14 mb-4 text-2xl  text-white'  {...register("password")} />
     {errors.password && errorText(errors.password?.message)}
     <div className=' flex flex-row  w-full   justify-start items-center'>
@@ -27,7 +31,7 @@ const SigninForm = () => {
     <label htmlFor="remember" className=' ml-2 text-xl italic font-semibold text-white'>Remember me</label>
     </div>
     <div className=' w-full flex justify-center items-center mt-4'>
-        <Button type='submit'  size={'xl'} className=' text-2xl' >LogIn</Button>
+        <Button type='submit'  size={'xl'} className=' text-2xl' > {registerForm ? "Register" :"LogIn"}</Button>
     </div>
 </form>
   )

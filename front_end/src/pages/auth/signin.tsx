@@ -5,12 +5,15 @@ import { FaFacebook } from 'react-icons/fa';
 import { Input } from '@/components/ui/input';
 import SigninForm from '@/forms/signinform';
 import { BsGithub } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 interface ISignInProps {
+    register ? : boolean
 }
 
 
-const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
+const SignIn: React.FunctionComponent<ISignInProps> = ({register}) => {
+     
     
   return (
     <section>
@@ -18,7 +21,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
         <div className="absolute inset-0 bg-black opacity-70" />
             <div className=' w-2/3   flex justify-center  flex-col  z-10'>
                 <h1 className=' text-white text-9xl font-semibold'>
-                    Welcome Back .!
+                   {register ? "Register" : "Welcome Back .!"} 
                 </h1>
                 <div className=' items-center flex'>
                     <button className=' border-4 border-white text-white -skew-x-6 w-72 h-20 mt-5 italic font-bold text-3xl '>
@@ -37,10 +40,9 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
             </div>
             <div className=' w-1/3   rounded-2xl p-10 z-10'>
                 <div className=' border-blue-400 border-2 w-full h-full flex flex-col justify-center p-14 bg-red backdrop-blur-sm bg-transparent rounded-2xl'>
-                    <h1 className=' text-5xl font-bold text-white mb-3'>Login</h1>
+                    <h1 className=' text-5xl font-bold text-white mb-3'>{register ?"Register": "Login" }</h1>
                     <p className=' text-gray-400 text-2xl mb-2'>Glad your back. !</p>
-                    <SigninForm />
-                    <button>Login</button>
+                    <SigninForm registerForm={register}/>
                     <p className=' mx-auto text-xl italic font-semibold text-white'>Forgot password?</p>
                     <div className="flex items-center my-4">
                          <hr className="flex-grow border-gray-300" />
@@ -53,7 +55,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
                         <FcGoogle />
                     </div>
                     <div className=' justify-center flex text-white'>
-                        <p>Don't have an account? <span className=' underline italic cursor-pointer'>Register</span></p>
+                        <p>Don't have an account? <Link  to="/register" className=' underline italic cursor-pointer'>Register</Link></p>
                     </div>
                 </div>
                 
