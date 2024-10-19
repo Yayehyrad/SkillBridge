@@ -4,26 +4,49 @@ import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 
 import { formDefaultValue, formSchema, IFormSchma } from './formSchema'
+import { useMutation } from '@tanstack/react-query'
+import { registerBackEnd } from '@/clientApi'
 
 const SigninForm = ({registerForm } : {registerForm ?: boolean}) => {
   const { register , formState : {errors , isLoading } , reset , handleSubmit } = useForm<IFormSchma>({
     mode : "onBlur",
     resolver : zodResolver(formSchema),
     defaultValues : formDefaultValue
-    
   })
-  const handleFormSubmit = (data : IFormSchma) => {
+  const { mutateAsync : mutateAsyncRegister } = useMutation({
+    mutationFn : registerBackEnd ,
+    onSuccess: async (data) => {
+      console.log(data)
+      // toast.success("Registration success!");
+      // await queryClient.invalidateQueries("validateToken");
+      // navigate("/");
+    },
+    onError: (e: Error) => {
+      console.log("hiree" , e , e.message)
+      // toast.error(e.message);
+    },
+    
+  } )
+
+
+
+  const handleFormSubmit = async (data : IFormSchma) => {
     if (registerForm){
-     console.log(data);
-     reset()}
+    await mutateAsyncRegister({
+      userName : data.userName,
+      userEmail : data.userEmail,
+      password : data.password,
+      role : "admin"
+     })
+    }
   }
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
     <Input type='text' placeholder='User name' className=' h-14 mb-4 text-2xl text-white ' {...register("userName" )}/>
     {errors.userName && errorText(errors.userName?.message)}
     {registerForm &&  
-     <Input type="text" placeholder='Email' className=' h-14 mb-4 text-2xl  text-white'  {...register('email')} />}
-    {errors.email && errorText(errors.email?.message)}
+     <Input type="text" placeholder='Email' className=' h-14 mb-4 text-2xl  text-white'  {...register('userEmail')} />}
+    {errors.userEmail && errorText(errors.userEmail?.message)}
     <Input type="password" placeholder='password' className=' h-14 mb-4 text-2xl  text-white'  {...register("password")} />
     {errors.password && errorText(errors.password?.message)}
     <div className=' flex flex-row  w-full   justify-start items-center'>
