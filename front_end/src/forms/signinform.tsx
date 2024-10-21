@@ -5,7 +5,7 @@ import {zodResolver} from '@hookform/resolvers/zod'
 
 import { formDefaultValue, formSchema, IFormSchma } from './formSchema'
 import { useMutation } from '@tanstack/react-query'
-import { registerBackEnd } from '@/clientApi'
+import { loginBackEnd, registerBackEnd } from '@/clientApi'
 
 const SigninForm = ({registerForm } : {registerForm ?: boolean}) => {
   const { register , formState : {errors , isLoading } , reset , handleSubmit } = useForm<IFormSchma>({
@@ -27,7 +27,21 @@ const SigninForm = ({registerForm } : {registerForm ?: boolean}) => {
     },
     
   } )
-
+  const { mutateAsync : mutateAsyncLogin } = useMutation({
+    mutationFn :  loginBackEnd ,
+    onSuccess: async (data) => {
+      registerForm ? console.log("registered") : console.log(data)
+      
+      // toast.success("Registration success!");
+      // await queryClient.invalidateQueries("validateToken");
+      // navigate("/");
+    },
+    onError: (e: Error) => {
+      console.log("hiree" , e , e.message)
+      // toast.error(e.message);
+    },
+    
+  } )
 
 
   const handleFormSubmit = async (data : IFormSchma) => {
@@ -38,14 +52,20 @@ const SigninForm = ({registerForm } : {registerForm ?: boolean}) => {
       password : data.password,
       role : "admin"
      })
+    }else {
+      await mutateAsyncLogin({
+        userEmail : data.userEmail,
+        password : data.password
+      })
     }
   }
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
-    <Input type='text' placeholder='User name' className=' h-14 mb-4 text-2xl text-white ' {...register("userName" )}/>
+    {registerForm &&
+    <Input type='text' placeholder='User name' className=' h-14 mb-4 text-2xl text-white ' {...register("userName" )}/>}
     {errors.userName && errorText(errors.userName?.message)}
-    {registerForm &&  
-     <Input type="text" placeholder='Email' className=' h-14 mb-4 text-2xl  text-white'  {...register('userEmail')} />}
+      
+     <Input type="text" placeholder='Email' className=' h-14 mb-4 text-2xl  text-white'  {...register('userEmail')} />
     {errors.userEmail && errorText(errors.userEmail?.message)}
     <Input type="password" placeholder='password' className=' h-14 mb-4 text-2xl  text-white'  {...register("password")} />
     {errors.password && errorText(errors.password?.message)}

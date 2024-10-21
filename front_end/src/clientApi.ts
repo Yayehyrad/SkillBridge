@@ -21,3 +21,22 @@ export const registerBackEnd = async (formData: IFormSchma) => {
     }
     return "success"
   };
+
+  export const loginBackEnd = async (formData: {userEmail : string , password:string}) => {
+    console.log(API_BASE_URL);
+    console.log("from the register backe end api" , formData)
+    const response = await fetch(`${API_BASE_URL}users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({userEmail : formData.userEmail , password : formData.password}),
+    });
+  
+    const responseBody = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(responseBody.message);
+    }
+    return responseBody
+  };
