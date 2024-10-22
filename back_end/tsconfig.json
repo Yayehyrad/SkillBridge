@@ -8,6 +8,6 @@
     "strict": true,
     "noImplicitAny": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts" , "./locale.d.ts"],
   "exclude": ["node_modules"]
 }
