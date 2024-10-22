@@ -40,3 +40,22 @@ export const registerBackEnd = async (formData: IFormSchma) => {
     }
     return responseBody
   };
+
+  export const fetchStatus = async () => {
+    console.log(API_BASE_URL);
+  
+    const response = await fetch(`${API_BASE_URL}users/status`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${sessionStorage.getItem('accessToken')}`
+      },
+    });
+  
+    const responseBody = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(responseBody.message);
+    }
+    return responseBody
+  };

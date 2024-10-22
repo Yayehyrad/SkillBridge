@@ -2,7 +2,7 @@ import z, { string } from "zod";
 
  
 const formSchema = z.object({
-    userName : z.string().min(1 , 'user name is required').max(255) , 
+    userName : z.string().max(255).optional() , 
     userEmail  : z.string() ,
     password : z.string().regex( 
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
