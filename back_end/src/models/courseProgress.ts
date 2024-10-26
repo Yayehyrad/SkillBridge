@@ -12,7 +12,7 @@ interface ICourseProgress extends Document {
   userId: string;
   courseId: string;
   completed: boolean;
-  completionDate: Date;
+  completionDate: Date | null;
   lecturesProgress: ILectureProgress[];
 }
 
